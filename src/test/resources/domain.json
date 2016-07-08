@@ -1,0 +1,140 @@
+{
+  "users": [ // użytkownicy systemu
+    {
+      "id": "greg", // unikalny identyfikator + login
+      "name": "Grzegorz" // przyjazna nazwa do wyświetlania w ui/mail/itd
+    }
+  ],
+  "payees": [ // potencjalni odbiorcy płatności
+    {
+      "id": "inea", // unikalny id
+      "name": "INEA S.A.", // nazwa do przelewów,
+      "shortName": "Inea", // przyjazna nazwa
+      "address": { // adres do przelewów
+        "street": "ul. Klaudyny Potockiej 25",
+        "city": "Poznań",
+        "postalCode": "60-211"
+      },
+      "user": "greg" // właściciel płatności
+    },
+    {
+      "id": "play",
+      "name": "P4 Sp. z o.o.",
+      "shortName": "Play",
+      "address": {
+        "street": "ul. Taśmowa 7",
+        "city": "Warszawa",
+        "postalCode": "02-677"
+      },
+      "user": "greg"
+    }
+  ],
+  "payeeAccounts": [ // konta w ramach odbiorców płatności, może być kilka dla każdego, np. dla dwóch adresów
+    {
+      "id": "inea-ulica-zz-m-yy", // unikalny id, może budowany na podstawie short name?
+      "shortName": "INEA - Ulica ZZ m. YY", // przyjazna nazwa do prezentowania w ui/mail/itd
+      "payee": "inea", // id odbiorcy płatności
+      "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY", // nr rachunku bankowego
+      "user": "greg" // właściciel płatności
+    },
+    {
+      "id": "play-telefon-komorkowy",
+      "shortName": "Play - telefon komórkowy",
+      "payee": "play",
+      "isbn": "ABCABCABCABCABCABCABCABCAB",
+      "user": "greg"
+    }
+  ],
+  "paymentDefinitions": [ // szablon przyszłych płatności
+    {
+      "payeeAccount": "inea-ulica-zz-m-yy", // id konta odbiorcy płatności
+      "period": { // opis sposobu generowania płatności
+        "type": "monthly", // raz w miesiącu
+        "startFrom": "2016-01" // zaczynając od january
+      },
+      "price": { // kwota płatności
+        "type": "constant", // stała kwota co miesiąc, alternatywnie zmienne co miesiąć (z użycia)
+        "value": "229,90" // wartość
+      },
+      "invoiceDate": { // orientacyjna data wystawienia faktury
+        "day": "6"
+      },
+      "paymentDueDate": { // orientacyjna data płatności
+        "day": "19"
+      },
+      "user": "greg" // właściciel płatności
+    },
+    {
+      "payeeAccount": "play-telefon-komorkowy",
+      "period": {
+        "type": "monthly",
+        "startFrom": "2016-01"
+      },
+      "price": {
+        "type": "varying"
+      },
+      "invoiceDate": {
+        "day": "22",
+        "month": "-1" // zwyczajowo wystawiona 22 dnia miesiąca poprzedzającego, domyślnie 0 czyli tego samego miesiąca
+                      // alternatywnie można w takich sytuacjach dać na sztywno pierwszy dzień miesiąca bieżącego? wtedy już powinna być
+      },
+      "paymentDueDate": {
+        "day": "6"
+      },
+      "user": "greg"
+    }
+  ],
+  "payments": [ // faktyczne płatności, generowane z szablonów
+    {
+      "invoiceDate": "2016-07-06", // data wystawienia rachunku
+                                   // pusta wartość - jeszcze nie wystawiono, jest w zadaniach
+      "paymentDueDate": "2016-07-19", // termin płatności
+                                      // pusta wartość - jeszcze nie wystawiono, jest w zadaniach
+      "paymentDate": "2016-07-25", // data faktycznej płatności
+                                   // pusta wartość - jeszcze nie zapłacono, jest w zadaniach
+      "invoiceNumber": "XXXXX/YYYY/ZZ/KKKK", // numer faktury
+                                             // pusta wartość - jeszcze nie wystawiono, jest w zadaniach
+      "price": "229,90", // kwota do zapłacenia
+                         // pusta wartość - jeszcze nie zapłacono, jest w zadaniach
+      "payeeAccount": { // dane odbiory płatności, w tym faktyczny nr rachunku
+        "name": "INEA S.A.",
+        "address": {
+          "street": "ul. Klaudyny Potockiej 25",
+          "city": "Poznań",
+          "postalCode": "60-211"
+        },
+        "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY"
+      },
+      "paymentDefinition": "inea-ulica-zz-m-yy", // id szablonu płatności z którego wygenerowano płatność
+      "user": "greg", // właściciel płatności,
+      "attachments": [ // załącznik do płatności
+        {
+          "type": "invoice", // dokumeny z fakturą, skan, pdf
+          "data": "xxx" // dane binarne załącznika
+        },
+        {
+          "type": "paymentConfirmation", // dokument potwierdzający płatność, pdf
+          "date": "yyy" // dane binarne załącznika
+        }
+      ]
+    },
+    {
+      "invoiceDate": "2016-06-22",
+      "paymentDueDate": "2016-07-06",
+      "paymentDate": "2016-07-01",
+      "invoiceNumber": "Z/YYYYYYYY/XX/KK",
+      "price": "135,99",
+      "payeeAccount": {
+        "name": "P4 Sp. z o.o.",
+        "address": {
+          "street": "ul. Taśmowa 7",
+          "city": "Warszawa",
+          "postalCode": "02-677"
+        },
+        "isbn": "ABCABCABCABCABCABCABCABCAB"
+      },
+      "paymentDefinition": "play-telefon-komorkowy",
+      "user": "greg"
+    }
+  ]
+}
