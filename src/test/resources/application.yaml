@@ -1,0 +1,3 @@
+logging:
+  level.net.liepcki.budgetsentry: debug
+  level.org.springframework.boot.autoconfigure.mongo.embedded: warn
