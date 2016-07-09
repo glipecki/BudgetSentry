@@ -52,29 +52,17 @@ public class SchedulerService {
 
 		for (final PaymentDefinition paymentDefinition : paymentDefinitionRepository.findAll()) {
 			final Payment lastPayment = paymentRepository.findFirstByPaymentDefinitionOrderByPaymentDueDateDateDesc(paymentDefinition.getId());
-
 			if (lastPayment == null || currentDate.isAfter(lastPayment.getPaymentDueDate().getDate())) {
-				paymentRepository.save(
-						createNextPayment(currentDate, paymentDefinition, getNextPaymentDate(paymentDefinition, currentDate, lastPayment))
-				);
+				final Payment nextPayment = createNextPayment(currentDate, paymentDefinition, lastPayment);
+				log.info("Creating new payment [paymentId: {}]", nextPayment.getId());
+				paymentRepository.save(nextPayment);
 			}
 		}
 
 	}
 
-	private LocalDate getNextPaymentDate(final PaymentDefinition paymentDefinition, final LocalDate currentDate, final Payment lastPayment) {
-		if (lastPayment != null) {
-			final LocalDate lastPaymentDate = lastPayment.getPaymentDueDate().getDate();
-			final LocalDate normalizedLastPaymentDate = LocalDate.of(lastPaymentDate.getYear(), lastPaymentDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
-			final Period paymentPeriod = paymentDefinition.getPeriod().getType().getPeriod();
-			return normalizedLastPaymentDate.plus(paymentPeriod);
-		} else {
-			final LocalDate startDate = paymentDefinition.getPeriod().getStartFrom();
-			return LocalDate.of(startDate.getYear(), startDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
-		}
-	}
-
-	private Payment createNextPayment(final LocalDate currentDate, final PaymentDefinition paymentDefinition, final LocalDate nextPaymentDate) {
+	private Payment createNextPayment(final LocalDate currentDate, final PaymentDefinition paymentDefinition, final Payment lastPayment) {
+		final LocalDate nextPaymentDate = getNextPaymentDate(paymentDefinition, currentDate, lastPayment);
 		final PayeeAccount payeeAccount = payeeAccountRepository.findOne(paymentDefinition.getPayeeAccount());
 		final Payee payee = payeeRepository.findOne(payeeAccount.getPayee());
 		return Payment.builder()
@@ -106,5 +94,16 @@ public class SchedulerService {
 				.build();
 	}
 
+	private LocalDate getNextPaymentDate(final PaymentDefinition paymentDefinition, final LocalDate currentDate, final Payment lastPayment) {
+		if (lastPayment != null) {
+			final LocalDate lastPaymentDate = lastPayment.getPaymentDueDate().getDate();
+			final LocalDate normalizedLastPaymentDate = LocalDate.of(lastPaymentDate.getYear(), lastPaymentDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
+			final Period paymentPeriod = paymentDefinition.getPeriod().getType().getPeriod();
+			return normalizedLastPaymentDate.plus(paymentPeriod);
+		} else {
+			final LocalDate startDate = paymentDefinition.getPeriod().getStartFrom();
+			return LocalDate.of(startDate.getYear(), startDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
+		}
+	}
 
 }
