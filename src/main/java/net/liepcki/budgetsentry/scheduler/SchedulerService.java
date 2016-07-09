@@ -1,6 +1,10 @@
 package net.liepcki.budgetsentry.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
+import net.liepcki.budgetsentry.payee.Payee;
+import net.liepcki.budgetsentry.payee.PayeeAccount;
+import net.liepcki.budgetsentry.payee.PayeeAccountRepository;
+import net.liepcki.budgetsentry.payee.PayeeRepository;
 import net.liepcki.budgetsentry.payment.*;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +25,22 @@ public class SchedulerService {
 
 	private final PaymentRepository paymentRepository;
 
+	private final PayeeAccountRepository payeeAccountRepository;
+
+	private final PayeeRepository payeeRepository;
+
 	private final CurrentDateProvider currentDateProvider;
 
 	public SchedulerService(
 			final PaymentDefinitionRepository paymentDefinitionRepository,
 			final PaymentRepository paymentRepository,
+			final PayeeAccountRepository payeeAccountRepository,
+			final PayeeRepository payeeRepository,
 			final CurrentDateProvider currentDateProvider) {
 		this.paymentDefinitionRepository = paymentDefinitionRepository;
 		this.paymentRepository = paymentRepository;
+		this.payeeAccountRepository = payeeAccountRepository;
+		this.payeeRepository = payeeRepository;
 		this.currentDateProvider = currentDateProvider;
 	}
 
@@ -63,13 +75,30 @@ public class SchedulerService {
 	}
 
 	private Payment createNextPayment(final LocalDate currentDate, final PaymentDefinition paymentDefinition, final LocalDate nextPaymentDate) {
+		final PayeeAccount payeeAccount = payeeAccountRepository.findOne(paymentDefinition.getPayeeAccount());
+		final Payee payee = payeeRepository.findOne(payeeAccount.getPayee());
 		return Payment.builder()
 				.id(UUID.randomUUID().toString())
 				.paymentDefinition(paymentDefinition.getId())
+				.invoiceDate(
+						PaymentDate.builder()
+								.date(nextPaymentDate.withDayOfMonth(paymentDefinition.getInvoiceDate().getDay()))
+								.type(PaymentDateType.PREDICTED)
+								.build()
+				)
 				.paymentDueDate(
 						PaymentDate.builder()
 								.type(PaymentDateType.PREDICTED)
 								.date(nextPaymentDate)
+								.build()
+				)
+				.payee(
+						PaymentPayee.builder()
+								.iban(payeeAccount.getIban())
+								.name(payee.getName())
+								.street(payee.getAddress().getStreet())
+								.city(payee.getAddress().getCity())
+								.postalCode(payee.getAddress().getPostalCode())
 								.build()
 				)
 				.price(paymentDefinition.getPrice().getValue())

@@ -12,10 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentPayeeAccountAddress {
+public class PaymentPayee {
 
+	private String name;
 	private String street;
 	private String city;
 	private String postalCode;
+	private String iban;
 
 }

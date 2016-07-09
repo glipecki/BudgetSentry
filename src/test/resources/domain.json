@@ -48,7 +48,7 @@
       // id odbiorcy płatności
       "payee": "inea",
       // nr rachunku bankowego
-      "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY",
+      "iban": "XYZXYZXYZXYZXYZXYZXYZXYZXY",
       // właściciel płatności
       "user": "greg"
     },
@@ -56,7 +56,7 @@
       "id": "play-telefon-komorkowy",
       "shortName": "Play - telefon komórkowy",
       "payee": "play",
-      "isbn": "ABCABCABCABCABCABCABCABCAB",
+      "iban": "ABCABCABCABCABCABCABCABCAB",
       "user": "greg"
     }
   ],
@@ -133,14 +133,12 @@
       // pusta wartość - jeszcze nie zapłacono, jest w zadaniach
       "price": "229,90",
       // dane odbiory płatności, w tym faktyczny nr rachunku
-      "payeeAccount": {
+      "payee": {
         "name": "INEA S.A.",
-        "address": {
-          "street": "ul. Klaudyny Potockiej 25",
-          "city": "Poznań",
-          "postalCode": "60-211"
-        },
-        "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY"
+        "street": "ul. Klaudyny Potockiej 25",
+        "city": "Poznań",
+        "psotalCode": "60-211",
+        "iban": "XYZXYZXYZXYZXYZXYZXYZXYZXY"
       },
       // id szablonu płatności z którego wygenerowano płatność
       "paymentDefinition": "inea-ulica-zz-m-yy",
@@ -176,7 +174,7 @@
           "city": "Warszawa",
           "postalCode": "02-677"
         },
-        "isbn": "ABCABCABCABCABCABCABCABCAB"
+        "iban": "ABCABCABCABCABCABCABCABCAB"
       },
       "paymentDefinition": "play-telefon-komorkowy",
       "user": "greg"

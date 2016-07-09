@@ -26,8 +26,7 @@ public class Payment {
 	private PaymentDate paymentDate;
 	private String invoiceNumber;
 	private BigDecimal price;
-	private PaymentPayeeAccount payeeAccount;
-	private String iban;
+	private PaymentPayee payee;
 	private String paymentDefinition;
 	private String user;
 
