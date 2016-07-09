@@ -21,7 +21,7 @@ public class PayeeAccount {
 	private String id;
 	private String shortName;
 	private String payee;
-	private String isbn;
+	private String iban;
 	private String user;
 
 }

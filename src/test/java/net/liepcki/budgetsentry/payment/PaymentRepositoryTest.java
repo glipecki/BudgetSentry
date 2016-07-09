@@ -43,7 +43,7 @@ public class PaymentRepositoryTest extends BudgetSentryApplicationTest {
 										)
 										.build()
 						)
-						.isbn("XYZXYZXYZXYZXYZXYZXYZXYZXY")
+						.iban("XYZXYZXYZXYZXYZXYZXYZXYZXY")
 						.paymentDefinition("inea-ulica-zz-m-yy")
 						.user("greg")
 						.build()

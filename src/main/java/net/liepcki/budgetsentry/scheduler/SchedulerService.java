@@ -73,6 +73,7 @@ public class SchedulerService {
 								.build()
 				)
 				.price(paymentDefinition.getPrice().getValue())
+				.user(paymentDefinition.getUser())
 				.build();
 	}
 

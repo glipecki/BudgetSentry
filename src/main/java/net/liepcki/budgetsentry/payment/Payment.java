@@ -27,7 +27,7 @@ public class Payment {
 	private String invoiceNumber;
 	private BigDecimal price;
 	private PaymentPayeeAccount payeeAccount;
-	private String isbn;
+	private String iban;
 	private String paymentDefinition;
 	private String user;
 

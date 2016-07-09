@@ -14,6 +14,7 @@ import java.time.Clock;
 public class BudgetSentryApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("user.timezone", "Europe/Warsaw");
 		SpringApplication.run(BudgetSentryApplication.class, args);
 	}
 

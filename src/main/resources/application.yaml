@@ -2,3 +2,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost/budget-sentry
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
