@@ -9,7 +9,8 @@ import net.liepcki.budgetsentry.payment.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -53,16 +54,48 @@ public class SchedulerService {
 		for (final PaymentDefinition paymentDefinition : paymentDefinitionRepository.findAll()) {
 			final Payment lastPayment = paymentRepository.findFirstByPaymentDefinitionOrderByPaymentDueDateDateDesc(paymentDefinition.getId());
 			if (lastPayment == null || currentDate.isAfter(lastPayment.getPaymentDueDate().getDate())) {
-				final Payment nextPayment = createNextPayment(currentDate, paymentDefinition, lastPayment);
-				log.info("Creating new payment [paymentId: {}]", nextPayment.getId());
-				paymentRepository.save(nextPayment);
+				final LocalDate startDate = getStartDate(paymentDefinition, lastPayment);
+				final List<LocalDate> paymentsToAdd = getDatesInRange(startDate, currentDate, paymentDefinition.getPeriod().getType(), lastPayment == null);
+				for (final LocalDate paymentToAdd : paymentsToAdd) {
+					final Payment payment = createNextPayment(paymentDefinition, paymentToAdd);
+					log.info("Creating new payment [paymentId: {}]", payment.getId());
+					paymentRepository.save(payment);
+				}
 			}
 		}
-
 	}
 
-	private Payment createNextPayment(final LocalDate currentDate, final PaymentDefinition paymentDefinition, final Payment lastPayment) {
-		final LocalDate nextPaymentDate = getNextPaymentDate(paymentDefinition, currentDate, lastPayment);
+	private LocalDate getStartDate(final PaymentDefinition paymentDefinition, final Payment lastPayment) {
+		int paymentDay = paymentDefinition.getPaymentDueDate().getDay();
+		final LocalDate fromDate = lastPayment != null ? lastPayment.getPaymentDueDate().getDate() : paymentDefinition.getPeriod().getStartFrom();
+		final LocalDate startDate = LocalDate.of(fromDate.getYear(), fromDate.getMonth(), paymentDay);
+		if (paymentDay >= startDate.getDayOfMonth()) {
+			return startDate;
+		} else {
+			return startDate.plus(paymentDefinition.getPeriod().getType().getPeriod());
+		}
+	}
+
+	private List<LocalDate> getDatesInRange(
+			final LocalDate startDate,
+			final LocalDate endDate,
+			final PaymentDefinitionPeriodType periodType,
+			final boolean addStartDate) {
+		final List<LocalDate> dates = new ArrayList<>();
+
+		LocalDate currentDate = startDate;
+		if (addStartDate) {
+			dates.add(currentDate);
+		}
+		while (currentDate.isBefore(endDate)) {
+			currentDate = currentDate.plus(periodType.getPeriod());
+			dates.add(currentDate);
+		}
+
+		return dates;
+	}
+
+	private Payment createNextPayment(final PaymentDefinition paymentDefinition, final LocalDate nextPaymentDate) {
 		final PayeeAccount payeeAccount = payeeAccountRepository.findOne(paymentDefinition.getPayeeAccount());
 		final Payee payee = payeeRepository.findOne(payeeAccount.getPayee());
 		return Payment.builder()
@@ -92,18 +125,6 @@ public class SchedulerService {
 				.price(paymentDefinition.getPrice().getValue())
 				.user(paymentDefinition.getUser())
 				.build();
-	}
-
-	private LocalDate getNextPaymentDate(final PaymentDefinition paymentDefinition, final LocalDate currentDate, final Payment lastPayment) {
-		if (lastPayment != null) {
-			final LocalDate lastPaymentDate = lastPayment.getPaymentDueDate().getDate();
-			final LocalDate normalizedLastPaymentDate = LocalDate.of(lastPaymentDate.getYear(), lastPaymentDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
-			final Period paymentPeriod = paymentDefinition.getPeriod().getType().getPeriod();
-			return normalizedLastPaymentDate.plus(paymentPeriod);
-		} else {
-			final LocalDate startDate = paymentDefinition.getPeriod().getStartFrom();
-			return LocalDate.of(startDate.getYear(), startDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
-		}
 	}
 
 }
