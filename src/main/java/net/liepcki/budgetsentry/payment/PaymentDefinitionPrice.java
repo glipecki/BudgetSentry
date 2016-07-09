@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PaymentDefinitionPrice {
 
-    private PaymentDefinitionPriceType type;
-    private BigDecimal value;
+	private PaymentDefinitionPriceType type;
+	private BigDecimal value;
 
 }

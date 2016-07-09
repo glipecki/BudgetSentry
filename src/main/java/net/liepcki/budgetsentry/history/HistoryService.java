@@ -16,18 +16,18 @@ import java.util.List;
 @Slf4j
 public class HistoryService {
 
-    private PaymentRepository paymentRepository;
+	private PaymentRepository paymentRepository;
 
-    public HistoryService(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
-    }
+	public HistoryService(PaymentRepository paymentRepository) {
+		this.paymentRepository = paymentRepository;
+	}
 
-    public List<Payment> getPastPayments(final String user) {
-        return paymentRepository.findByUserAndPaymentDateNotNull(user);
-    }
+	public List<Payment> getPastPayments(final String user) {
+		return paymentRepository.findByUserAndPaymentDateNotNull(user);
+	}
 
-    public List<Payment> getPendingPayments(final String user) {
-        return paymentRepository.findByUserAndPaymentDateNull(user);
-    }
+	public List<Payment> getPendingPayments(final String user) {
+		return paymentRepository.findByUserAndPaymentDateNull(user);
+	}
 
 }

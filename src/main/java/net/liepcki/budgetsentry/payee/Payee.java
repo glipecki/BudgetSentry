@@ -17,11 +17,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 public class Payee {
 
-    @Id
-    private String id;
-    private String name;
-    private String shortName;
-    private PayeeAddress address;
-    private String user;
+	@Id
+	private String id;
+	private String name;
+	private String shortName;
+	private PayeeAddress address;
+	private String user;
 
 }

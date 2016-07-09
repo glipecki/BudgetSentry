@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class StaticCurrentUserProvider implements CurrentUserProvider {
 
-    public static final String USER = "greg";
+	public static final String USER = "greg";
 
-    @Override
-    public String getCurrentUser() {
-        return USER;
-    }
+	@Override
+	public String getCurrentUser() {
+		return USER;
+	}
 
 }

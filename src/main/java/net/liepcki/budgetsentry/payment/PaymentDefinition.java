@@ -17,13 +17,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 public class PaymentDefinition {
 
-    @Id
-    private String id;
-    private String payeeAccount;
-    private PaymentDefinitionPeriod period;
-    private PaymentDefinitionPrice price;
-    private PaymentDefinitionDate invoiceDate;
-    private PaymentDefinitionDate paymentDueDate;
-    private String user;
+	@Id
+	private String id;
+	private String payeeAccount;
+	private PaymentDefinitionPeriod period;
+	private PaymentDefinitionPrice price;
+	private PaymentDefinitionDate invoiceDate;
+	private PaymentDefinitionDate paymentDueDate;
+	private String user;
 
 }

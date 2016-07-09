@@ -13,18 +13,18 @@ import java.time.Clock;
 @SpringBootApplication
 public class BudgetSentryApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BudgetSentryApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BudgetSentryApplication.class, args);
+	}
 
-    @Bean
-    public MongoClientOptions optionsProvider() {
-        return MongoClientOptions.builder().serverSelectionTimeout(5000).build();
-    }
+	@Bean
+	public MongoClientOptions optionsProvider() {
+		return MongoClientOptions.builder().serverSelectionTimeout(5000).build();
+	}
 
-    @Bean
-    public Clock clock() {
-        return Clock.systemDefaultZone();
-    }
+	@Bean
+	public Clock clock() {
+		return Clock.systemDefaultZone();
+	}
 
 }

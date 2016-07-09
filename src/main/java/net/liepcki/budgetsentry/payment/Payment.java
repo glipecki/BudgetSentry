@@ -19,16 +19,16 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Payment {
 
-    @Id
-    private String id;
-    private PaymentDate invoiceDate;
-    private PaymentDate paymentDueDate;
-    private PaymentDate paymentDate;
-    private String invoiceNumber;
-    private BigDecimal price;
-    private PaymentPayeeAccount payeeAccount;
-    private String isbn;
-    private String paymentDefinition;
-    private String user;
+	@Id
+	private String id;
+	private PaymentDate invoiceDate;
+	private PaymentDate paymentDueDate;
+	private PaymentDate paymentDate;
+	private String invoiceNumber;
+	private BigDecimal price;
+	private PaymentPayeeAccount payeeAccount;
+	private String isbn;
+	private String paymentDefinition;
+	private String user;
 
 }

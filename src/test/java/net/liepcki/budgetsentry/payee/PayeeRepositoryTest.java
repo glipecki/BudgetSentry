@@ -16,35 +16,35 @@ import static org.assertj.core.api.Assertions.*;
 @Slf4j
 public class PayeeRepositoryTest extends BudgetSentryApplicationTest {
 
-    @Autowired
-    private PayeeRepository payeeRepository;
+	@Autowired
+	private PayeeRepository payeeRepository;
 
-    @Autowired
-    private MongoTemplate mongo;
+	@Autowired
+	private MongoTemplate mongo;
 
-    @Test
-    public void shouldStorePayee() {
-        payeeRepository.save(
-                Payee.builder()
-                        .id("inea")
-                        .shortName("Inea")
-                        .name("INEA S.A.")
-                        .user("greg")
-                        .address(
-                                PayeeAddress.builder()
-                                        .street("ul. Klaudyny Potockiej 25")
-                                        .city("Poznań")
-                                        .postalCode("60-211")
-                                        .build()
-                        )
-                        .build()
-        );
+	@Test
+	public void shouldStorePayee() {
+		payeeRepository.save(
+				Payee.builder()
+						.id("inea")
+						.shortName("Inea")
+						.name("INEA S.A.")
+						.user("greg")
+						.address(
+								PayeeAddress.builder()
+										.street("ul. Klaudyny Potockiej 25")
+										.city("Poznań")
+										.postalCode("60-211")
+										.build()
+						)
+						.build()
+		);
 
-        final List<Payee> payees = payeeRepository.findAll();
-        log.debug("Payees from DB: {}", payees);
-        assertThat(payees).hasSize(1);
+		final List<Payee> payees = payeeRepository.findAll();
+		log.debug("Payees from DB: {}", payees);
+		assertThat(payees).hasSize(1);
 
-        log.debug("OneRow: {}", mongo.getCollection("payees").findOne());
-    }
+		log.debug("OneRow: {}", mongo.getCollection("payees").findOne());
+	}
 
 }

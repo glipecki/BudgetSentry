@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Schedules future payments based on current date and available payment definitions.
@@ -19,60 +17,64 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SchedulerService {
 
-    private final PaymentDefinitionRepository paymentDefinitionRepository;
+	private final PaymentDefinitionRepository paymentDefinitionRepository;
 
-    private final PaymentRepository paymentRepository;
+	private final PaymentRepository paymentRepository;
 
-    private final CurrentDateProvider currentDateProvider;
+	private final CurrentDateProvider currentDateProvider;
 
-    public SchedulerService(
-            final PaymentDefinitionRepository paymentDefinitionRepository,
-            final PaymentRepository paymentRepository,
-            final CurrentDateProvider currentDateProvider) {
-        this.paymentDefinitionRepository = paymentDefinitionRepository;
-        this.paymentRepository = paymentRepository;
-        this.currentDateProvider = currentDateProvider;
-    }
+	public SchedulerService(
+			final PaymentDefinitionRepository paymentDefinitionRepository,
+			final PaymentRepository paymentRepository,
+			final CurrentDateProvider currentDateProvider) {
+		this.paymentDefinitionRepository = paymentDefinitionRepository;
+		this.paymentRepository = paymentRepository;
+		this.currentDateProvider = currentDateProvider;
+	}
 
-    public void schedule() {
-        log.info("System request to schedule pending payments");
+	public void schedule() {
+		log.info("System request to schedule pending payments");
 
-        final LocalDate currentDate = currentDateProvider.getCurrentDate();
-        log.debug("Looking for potential payments for based on day: {}", currentDate);
+		final LocalDate currentDate = currentDateProvider.getCurrentDate();
+		log.debug("Looking for potential payments for based on day: {}", currentDate);
 
-        // look for payments within next month
-        final List<Payment> existingPayments = paymentRepository.findByPaymentDueDateDateBetween(
-                currentDate.minus(Period.ofDays(1)),
-                currentDate.plus(Period.ofMonths(1))
-        );
-        log.debug("Payments within next month: {}", existingPayments);
+		for (final PaymentDefinition paymentDefinition : paymentDefinitionRepository.findAll()) {
+			final Payment lastPayment = paymentRepository.findFirstByPaymentDefinitionOrderByPaymentDueDateDateDesc(paymentDefinition.getId());
 
-        // look for missing payments for next month
-        final List<String> paymentDefinitionsWithExistingPayments = existingPayments.stream().map(Payment::getPaymentDefinition).collect(Collectors.toList());
-        final List<PaymentDefinition> paymentDefinitionsForMissingPayments = paymentDefinitionRepository.findByIdNotIn(paymentDefinitionsWithExistingPayments);
-        log.debug("Missing payments for next month: {}", paymentDefinitionsForMissingPayments);
+			if (lastPayment == null || currentDate.isAfter(lastPayment.getPaymentDueDate().getDate())) {
+				paymentRepository.save(
+						createNextPayment(currentDate, paymentDefinition, getNextPaymentDate(paymentDefinition, currentDate, lastPayment))
+				);
+			}
+		}
 
-        // create missing payments
-        for (final PaymentDefinition paymentDefinition : paymentDefinitionsForMissingPayments) {
-            paymentRepository.save(
-                    Payment.builder()
-                            .id(UUID.randomUUID().toString())
-                            .paymentDefinition(paymentDefinition.getId())
-                            .paymentDueDate(
-                                    PaymentDate.builder()
-                                            .type(PaymentDateType.PREDICTED)
-                                            .date(
-                                                    LocalDate.of(
-                                                            currentDate.getYear(),
-                                                            paymentDefinition.getPaymentDueDate().getDay() >= currentDate.getDayOfMonth() ? currentDate.getMonth() : currentDate.plus(Period.ofMonths(1)).getMonth(),
-                                                            paymentDefinition.getPaymentDueDate().getDay())
-                                            )
-                                            .build()
-                            )
-                            .price(paymentDefinition.getPrice().getValue())
-                            .build()
-            );
-        }
-    }
+	}
+
+	private LocalDate getNextPaymentDate(final PaymentDefinition paymentDefinition, final LocalDate currentDate, final Payment lastPayment) {
+		if (lastPayment != null) {
+			final LocalDate lastPaymentDate = lastPayment.getPaymentDueDate().getDate();
+			final LocalDate normalizedLastPaymentDate = LocalDate.of(lastPaymentDate.getYear(), lastPaymentDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
+			final Period paymentPeriod = paymentDefinition.getPeriod().getType().getPeriod();
+			return normalizedLastPaymentDate.plus(paymentPeriod);
+		} else {
+			final LocalDate startDate = paymentDefinition.getPeriod().getStartFrom();
+			return LocalDate.of(startDate.getYear(), startDate.getMonth(), paymentDefinition.getPaymentDueDate().getDay());
+		}
+	}
+
+	private Payment createNextPayment(final LocalDate currentDate, final PaymentDefinition paymentDefinition, final LocalDate nextPaymentDate) {
+		return Payment.builder()
+				.id(UUID.randomUUID().toString())
+				.paymentDefinition(paymentDefinition.getId())
+				.paymentDueDate(
+						PaymentDate.builder()
+								.type(PaymentDateType.PREDICTED)
+								.date(nextPaymentDate)
+								.build()
+				)
+				.price(paymentDefinition.getPrice().getValue())
+				.build();
+	}
+
 
 }

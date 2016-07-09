@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PayeeAddress {
 
-    private String street;
-    private String city;
-    private String postalCode;
+	private String street;
+	private String city;
+	private String postalCode;
 
 }

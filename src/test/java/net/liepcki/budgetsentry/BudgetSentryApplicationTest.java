@@ -28,43 +28,43 @@ import static org.mockito.Mockito.*;
 @Slf4j
 public abstract class BudgetSentryApplicationTest {
 
-    public static final String USER = StaticCurrentUserProvider.USER;
+	public static final String USER = StaticCurrentUserProvider.USER;
 
-    @Autowired
-    private MongoClient mongoClient;
+	@Autowired
+	private MongoClient mongoClient;
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Value("${local.server.port}")
-    private int port;
+	@Value("${local.server.port}")
+	private int port;
 
-    private TestRestTemplate restTemplate = new TestRestTemplate();
+	private TestRestTemplate restTemplate = new TestRestTemplate();
 
-    @Before
-    public void cleanTestDb() {
-        for (final String database : mongoClient.listDatabaseNames()) {
-            log.debug("Dropping MongoDB database before test [dbName={}]", database);
-            mongoClient.dropDatabase(database);
-        }
-    }
+	@Before
+	public void cleanTestDb() {
+		for (final String database : mongoClient.listDatabaseNames()) {
+			log.debug("Dropping MongoDB database before test [dbName={}]", database);
+			mongoClient.dropDatabase(database);
+		}
+	}
 
-    protected MockMvc mockMvc() {
-        return this.mockMvc;
-    }
+	protected MockMvc mockMvc() {
+		return this.mockMvc;
+	}
 
-    protected TestRestTemplate restTemplate() {
-        return restTemplate;
-    }
+	protected TestRestTemplate restTemplate() {
+		return restTemplate;
+	}
 
-    protected String path(String path) {
-        return String.format("http://localhost:%d/%s", port, path.startsWith("/") ? path.substring(1) : path);
-    }
+	protected String path(String path) {
+		return String.format("http://localhost:%d/%s", port, path.startsWith("/") ? path.substring(1) : path);
+	}
 
-    protected void mockFixedClock(final Clock mockedClock, final String date) {
-        Instant instant = Instant.parse(date);
-        when(mockedClock.instant()).thenReturn(instant);
-        when(mockedClock.getZone()).thenReturn(TimeZone.getDefault().toZoneId());
-    }
+	protected void mockFixedClock(final Clock mockedClock, final String date) {
+		Instant instant = Instant.parse(date);
+		when(mockedClock.instant()).thenReturn(instant);
+		when(mockedClock.getZone()).thenReturn(TimeZone.getDefault().toZoneId());
+	}
 
 }

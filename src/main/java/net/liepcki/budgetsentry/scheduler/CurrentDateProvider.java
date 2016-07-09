@@ -11,14 +11,14 @@ import java.time.LocalDate;
 @Service
 public class CurrentDateProvider {
 
-    private final Clock clock;
+	private final Clock clock;
 
-    public CurrentDateProvider(final Clock clock) {
-        this.clock = clock;
-    }
+	public CurrentDateProvider(final Clock clock) {
+		this.clock = clock;
+	}
 
-    public LocalDate getCurrentDate() {
-        return LocalDate.now(clock);
-    }
+	public LocalDate getCurrentDate() {
+		return LocalDate.now(clock);
+	}
 
 }

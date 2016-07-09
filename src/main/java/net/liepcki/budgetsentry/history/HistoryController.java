@@ -17,24 +17,24 @@ import java.util.List;
 @Slf4j
 public class HistoryController {
 
-    public static final String PENDING_PAYMENTS_URI = "/history/pending";
+	public static final String PENDING_PAYMENTS_URI = "/history/pending";
 
-    private final HistoryService historyService;
-    private final CurrentUserProvider currentUserProvider;
+	private final HistoryService historyService;
+	private final CurrentUserProvider currentUserProvider;
 
-    private HistoryController(final HistoryService historyService, final CurrentUserProvider currentUserProvider) {
-        this.historyService = historyService;
-        this.currentUserProvider = currentUserProvider;
-    }
+	private HistoryController(final HistoryService historyService, final CurrentUserProvider currentUserProvider) {
+		this.historyService = historyService;
+		this.currentUserProvider = currentUserProvider;
+	}
 
-    @RequestMapping(
-            value = PENDING_PAYMENTS_URI,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET
-    )
-    public List<Payment> pendingPayments() {
-        log.debug("User request for pending payments");
-        return historyService.getPendingPayments(currentUserProvider.getCurrentUser());
-    }
+	@RequestMapping(
+			value = PENDING_PAYMENTS_URI,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET
+	)
+	public List<Payment> pendingPayments() {
+		log.debug("User request for pending payments");
+		return historyService.getPendingPayments(currentUserProvider.getCurrentUser());
+	}
 
 }

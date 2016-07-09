@@ -20,41 +20,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 public class GetPendingPaymentsTest extends BudgetSentryApplicationTest {
 
-    /**
-     * @deprecated use REST API instead of repository
-     */
-    @Autowired
-    @Deprecated
-    private PaymentRepository paymentRepository;
+	/**
+	 * @deprecated use REST API instead of repository
+	 */
+	@Autowired
+	@Deprecated
+	private PaymentRepository paymentRepository;
 
-    /**
-     * Just demo method for Spring Test MockMVC.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void shouldGetPendingPaymentsMockMvc() throws Exception {
-        mockMvc().perform(get(HistoryController.PENDING_PAYMENTS_URI)).andExpect(status().isOk());
-    }
+	/**
+	 * Just demo method for Spring Test MockMVC.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void shouldGetPendingPaymentsMockMvc() throws Exception {
+		mockMvc().perform(get(HistoryController.PENDING_PAYMENTS_URI)).andExpect(status().isOk());
+	}
 
-    @Test
-    public void shouldGetPendingPayments() {
-        // given
-        final String paymentId = UUID.randomUUID().toString();
-        paymentRepository.save(
-                Payment.builder()
-                        .id(paymentId)
-                        .user(USER)
-                        .build()
-        );
+	@Test
+	public void shouldGetPendingPayments() {
+		// given
+		final String paymentId = UUID.randomUUID().toString();
+		paymentRepository.save(
+				Payment.builder()
+						.id(paymentId)
+						.user(USER)
+						.build()
+		);
 
-        // when
-        final Payment[] result = restTemplate().getForObject(path(HistoryController.PENDING_PAYMENTS_URI), Payment[].class);
-        log.debug("Pending payments result: {}", Arrays.toString(result));
+		// when
+		final Payment[] result = restTemplate().getForObject(path(HistoryController.PENDING_PAYMENTS_URI), Payment[].class);
+		log.debug("Pending payments result: {}", Arrays.toString(result));
 
-        // then
-        assertThat(result).hasSize(1);
-        assertThat(result[0].getId()).isEqualTo(paymentId);
-    }
+		// then
+		assertThat(result).hasSize(1);
+		assertThat(result[0].getId()).isEqualTo(paymentId);
+	}
 
 }

@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentDefinitionDate {
 
-    private int day;
+	private int day;
 
 }

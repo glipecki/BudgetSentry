@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PaymentDefinitionPeriod {
 
-    private PaymentDefinitionPeriodType type;
-    private LocalDate startFrom;
+	private PaymentDefinitionPeriodType type;
+	private LocalDate startFrom;
 
 }

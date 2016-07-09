@@ -20,55 +20,55 @@ import static org.assertj.core.api.Assertions.*;
 @Slf4j
 public class HistoryServiceTest extends BudgetSentryApplicationTest {
 
-    @Autowired
-    private HistoryService service;
+	@Autowired
+	private HistoryService service;
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
-    @Before
-    public void setUpRepository() {
-        paymentRepository.save(finishedPayment("finished"));
-        paymentRepository.save(pendingPayment("pending"));
-    }
+	@Before
+	public void setUpRepository() {
+		paymentRepository.save(finishedPayment("finished"));
+		paymentRepository.save(pendingPayment("pending"));
+	}
 
-    private Payment finishedPayment(final String id) {
-        return dummyPayment(id)
-                .paymentDate(PaymentDate.builder().date(LocalDate.now()).build())
-                .build();
-    }
+	private Payment finishedPayment(final String id) {
+		return dummyPayment(id)
+				.paymentDate(PaymentDate.builder().date(LocalDate.now()).build())
+				.build();
+	}
 
-    private Payment pendingPayment(final String id) {
-        return dummyPayment(id)
-                .build();
-    }
+	private Payment pendingPayment(final String id) {
+		return dummyPayment(id)
+				.build();
+	}
 
-    private Payment.PaymentBuilder dummyPayment(final String id) {
-        return Payment.builder()
-                .id(id)
-                .user(USER);
-    }
+	private Payment.PaymentBuilder dummyPayment(final String id) {
+		return Payment.builder()
+				.id(id)
+				.user(USER);
+	}
 
-    @Test
-    public void shouldGetPastPayments() {
-        // when
-        final List<Payment> pastPayments = service.getPastPayments(USER);
+	@Test
+	public void shouldGetPastPayments() {
+		// when
+		final List<Payment> pastPayments = service.getPastPayments(USER);
 
-        // then
-        log.debug("Past payments: {}", pastPayments);
-        assertThat(pastPayments).isNotEmpty().hasSize(1);
-        assertThat(pastPayments.get(0).getId()).isEqualTo("finished");
-    }
+		// then
+		log.debug("Past payments: {}", pastPayments);
+		assertThat(pastPayments).isNotEmpty().hasSize(1);
+		assertThat(pastPayments.get(0).getId()).isEqualTo("finished");
+	}
 
-    @Test
-    public void shouldGetPendingPayments() {
-        // when
-        final List<Payment> pendingPayments = service.getPendingPayments(USER);
+	@Test
+	public void shouldGetPendingPayments() {
+		// when
+		final List<Payment> pendingPayments = service.getPendingPayments(USER);
 
-        // then
-        log.debug("Pending payments: {}", pendingPayments);
-        assertThat(pendingPayments).isNotEmpty().hasSize(1);
-        assertThat(pendingPayments.get(0).getId()).isEqualTo("pending");
-    }
+		// then
+		log.debug("Pending payments: {}", pendingPayments);
+		assertThat(pendingPayments).isNotEmpty().hasSize(1);
+		assertThat(pendingPayments.get(0).getId()).isEqualTo("pending");
+	}
 
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentPayeeAccount {
 
-    private String name;
-    private PaymentPayeeAccountAddress address;
+	private String name;
+	private PaymentPayeeAccountAddress address;
 
 }

@@ -15,20 +15,20 @@ import static org.assertj.core.api.Assertions.*;
 @Slf4j
 public class UserRepositoryTest extends BudgetSentryApplicationTest {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Test
-    public void shouldPersistAnyUser() {
-        // when
-        userRepository.save(User.builder().id("greg").name("Grzegorz").build());
-        userRepository.save(User.builder().id("krysia").name("Krysia").build());
+	@Test
+	public void shouldPersistAnyUser() {
+		// when
+		userRepository.save(User.builder().id("greg").name("Grzegorz").build());
+		userRepository.save(User.builder().id("krysia").name("Krysia").build());
 
-        // then
-        final List<User> users = userRepository.findAll();
-        log.debug("Users from DB: {}", users);
+		// then
+		final List<User> users = userRepository.findAll();
+		log.debug("Users from DB: {}", users);
 
-        assertThat(users).hasSize(2);
-    }
+		assertThat(users).hasSize(2);
+	}
 
 }
