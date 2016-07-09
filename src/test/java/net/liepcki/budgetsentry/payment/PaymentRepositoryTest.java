@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author gregorry
@@ -26,9 +26,9 @@ public class PaymentRepositoryTest extends BudgetSentryApplicationTest {
         repository.save(
                 Payment.builder()
                         .id(UUID.randomUUID().toString())
-                        .invoiceDate(LocalDate.of(2016, 07, 06))
-                        .paymentDueDate(LocalDate.of(2016, 07, 25))
-                        .paymentDate(LocalDate.of(2016, 07, 19))
+                        .invoiceDate(PaymentDate.builder().date(LocalDate.of(2016, 07, 06)).build())
+                        .paymentDueDate(PaymentDate.builder().date(LocalDate.of(2016, 07, 25)).build())
+                        .paymentDate(PaymentDate.builder().date(LocalDate.of(2016, 07, 19)).build())
                         .invoiceNumber("XYZ/ABCDDEFG/KKK")
                         .price(new BigDecimal("229.90"))
                         .payeeAccount(

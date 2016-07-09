@@ -13,6 +13,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.util.TimeZone;
+
+import static org.mockito.Mockito.*;
+
 /**
  * @author gregorry
  */
@@ -53,6 +59,12 @@ public abstract class BudgetSentryApplicationTest {
 
     protected String path(String path) {
         return String.format("http://localhost:%d/%s", port, path.startsWith("/") ? path.substring(1) : path);
+    }
+
+    protected void mockFixedClock(final Clock mockedClock, final String date) {
+        Instant instant = Instant.parse(date);
+        when(mockedClock.instant()).thenReturn(instant);
+        when(mockedClock.getZone()).thenReturn(TimeZone.getDefault().toZoneId());
     }
 
 }

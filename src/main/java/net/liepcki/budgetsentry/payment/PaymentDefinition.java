@@ -22,7 +22,7 @@ public class PaymentDefinition {
     private String payeeAccount;
     private PaymentDefinitionPeriod period;
     private PaymentDefinitionPrice price;
-    private PaymentDefinitionDate innvoiceDate;
+    private PaymentDefinitionDate invoiceDate;
     private PaymentDefinitionDate paymentDueDate;
     private String user;
 

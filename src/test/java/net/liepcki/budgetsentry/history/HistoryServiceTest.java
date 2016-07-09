@@ -3,6 +3,7 @@ package net.liepcki.budgetsentry.history;
 import lombok.extern.slf4j.Slf4j;
 import net.liepcki.budgetsentry.BudgetSentryApplicationTest;
 import net.liepcki.budgetsentry.payment.Payment;
+import net.liepcki.budgetsentry.payment.PaymentDate;
 import net.liepcki.budgetsentry.payment.PaymentRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author gregorry
@@ -33,7 +34,7 @@ public class HistoryServiceTest extends BudgetSentryApplicationTest {
 
     private Payment finishedPayment(final String id) {
         return dummyPayment(id)
-                .paymentDate(LocalDate.now())
+                .paymentDate(PaymentDate.builder().date(LocalDate.now()).build())
                 .build();
     }
 

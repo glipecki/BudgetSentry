@@ -2,6 +2,7 @@ package net.liepcki.budgetsentry.payment;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,4 +13,7 @@ public interface PaymentRepository extends MongoRepository<Payment, String> {
     List<Payment> findByUserAndPaymentDateNotNull(String user);
 
     List<Payment> findByUserAndPaymentDateNull(String user);
+
+    List<Payment> findByPaymentDueDateDateBetween(LocalDate from, LocalDate to);
+
 }

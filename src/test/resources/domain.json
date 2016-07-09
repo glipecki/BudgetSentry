@@ -1,30 +1,30 @@
 {
+  // użytkownicy systemu
   "users": [
-    // użytkownicy systemu
     {
-      "id": "greg",
       // unikalny identyfikator + login
-      "name": "Grzegorz"
+      "id": "greg",
       // przyjazna nazwa do wyświetlania w ui/mail/itd
+      "name": "Grzegorz"
     }
   ],
+  // potencjalni odbiorcy płatności
   "payees": [
-    // potencjalni odbiorcy płatności
     {
-      "id": "inea",
       // unikalny id
-      "name": "INEA S.A.",
+      "id": "inea",
       // nazwa do przelewów,
-      "shortName": "Inea",
+      "name": "INEA S.A.",
       // przyjazna nazwa
+      "shortName": "Inea",
+      // adres do przelewów
       "address": {
-        // adres do przelewów
         "street": "ul. Klaudyny Potockiej 25",
         "city": "Poznań",
         "postalCode": "60-211"
       },
-      "user": "greg"
       // właściciel płatności
+      "user": "greg"
     },
     {
       "id": "play",
@@ -38,19 +38,19 @@
       "user": "greg"
     }
   ],
+  // konta w ramach odbiorców płatności, może być kilka dla każdego, np. dla dwóch adresów
   "payeeAccounts": [
-    // konta w ramach odbiorców płatności, może być kilka dla każdego, np. dla dwóch adresów
     {
-      "id": "inea-ulica-zz-m-yy",
       // unikalny id, może budowany na podstawie short name?
-      "shortName": "INEA - Ulica ZZ m. YY",
+      "id": "inea-ulica-zz-m-yy",
       // przyjazna nazwa do prezentowania w ui/mail/itd
-      "payee": "inea",
+      "shortName": "INEA - Ulica ZZ m. YY",
       // id odbiorcy płatności
-      "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY",
+      "payee": "inea",
       // nr rachunku bankowego
-      "user": "greg"
+      "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY",
       // właściciel płatności
+      "user": "greg"
     },
     {
       "id": "play-telefon-komorkowy",
@@ -60,36 +60,36 @@
       "user": "greg"
     }
   ],
+  // szablon przyszłych płatności
   "paymentDefinitions": [
-    // szablon przyszłych płatności
     {
       "id": "c8fa44e5-5c90-48e8-a9aa-f4f40dc953be",
-      "payeeAccount": "inea-ulica-zz-m-yy",
       // id konta odbiorcy płatności
+      "payeeAccount": "inea-ulica-zz-m-yy",
+      // opis sposobu generowania płatności
       "period": {
-        // opis sposobu generowania płatności
-        "type": "monthly",
         // raz w miesiącu
-        "startFrom": "2016-01"
+        "type": "monthly",
         // zaczynając od january
+        "startFrom": "2016-01"
       },
+      // kwota płatności
       "price": {
-        // kwota płatności
-        "type": "constant",
         // stała kwota co miesiąc, alternatywnie zmienne co miesiąć (z użycia)
-        "value": "229,90"
+        "type": "constant",
         // wartość
+        "value": "229,90"
       },
+      // orientacyjna data wystawienia faktury
       "invoiceDate": {
-        // orientacyjna data wystawienia faktury
         "day": "6"
       },
+      // orientacyjna data płatności
       "paymentDueDate": {
-        // orientacyjna data płatności
         "day": "19"
       },
-      "user": "greg"
       // właściciel płatności
+      "user": "greg"
     },
     {
       "id": "f70ade44-d6ba-4ece-99a2-06a9ca2f35d2",
@@ -103,9 +103,9 @@
       },
       "invoiceDate": {
         "day": "22",
-        "month": "-1"
         // zwyczajowo wystawiona 22 dnia miesiąca poprzedzającego, domyślnie 0 czyli tego samego miesiąca
         // alternatywnie można w takich sytuacjach dać na sztywno pierwszy dzień miesiąca bieżącego? wtedy już powinna być
+        "month": "-1"
       },
       "paymentDueDate": {
         "day": "6"
@@ -113,27 +113,27 @@
       "user": "greg"
     }
   ],
+  // faktyczne płatności, generowane z szablonów
   "payments": [
-    // faktyczne płatności, generowane z szablonów
     {
       "id": "f4ab4374-d08e-4cb6-abf3-d5231aa925aa",
-      "invoiceDate": "2016-07-06",
       // data wystawienia rachunku
       // pusta wartość - jeszcze nie wystawiono, jest w zadaniach
-      "paymentDueDate": "2016-07-25",
+      "invoiceDate": "2016-07-06",
       // termin płatności
       // pusta wartość - jeszcze nie wystawiono, jest w zadaniach
-      "paymentDate": "2016-07-19",
+      "paymentDueDate": "2016-07-25",
       // data faktycznej płatności
       // pusta wartość - jeszcze nie zapłacono, jest w zadaniach
-      "invoiceNumber": "XXXXX/YYYY/ZZ/KKKK",
+      "paymentDate": "2016-07-19",
       // numer faktury
       // pusta wartość - jeszcze nie wystawiono, jest w zadaniach
-      "price": "229,90",
+      "invoiceNumber": "XXXXX/YYYY/ZZ/KKKK",
       // kwota do zapłacenia
       // pusta wartość - jeszcze nie zapłacono, jest w zadaniach
+      "price": "229,90",
+      // dane odbiory płatności, w tym faktyczny nr rachunku
       "payeeAccount": {
-        // dane odbiory płatności, w tym faktyczny nr rachunku
         "name": "INEA S.A.",
         "address": {
           "street": "ul. Klaudyny Potockiej 25",
@@ -142,23 +142,23 @@
         },
         "isbn": "XYZXYZXYZXYZXYZXYZXYZXYZXY"
       },
-      "paymentDefinition": "inea-ulica-zz-m-yy",
       // id szablonu płatności z którego wygenerowano płatność
-      "user": "greg",
+      "paymentDefinition": "inea-ulica-zz-m-yy",
       // właściciel płatności,
+      "user": "greg",
+      // załącznik do płatności
       "attachments": [
-        // załącznik do płatności
         {
-          "type": "invoice",
           // dokumeny z fakturą, skan, pdf
-          "data": "xxx"
+          "type": "invoice",
           // dane binarne załącznika
+          "data": "xxx"
         },
         {
-          "type": "paymentConfirmation",
           // dokument potwierdzający płatność, pdf
-          "date": "yyy"
+          "type": "paymentConfirmation",
           // dane binarne załącznika
+          "date": "yyy"
         }
       ]
     },
