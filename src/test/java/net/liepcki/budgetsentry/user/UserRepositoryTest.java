@@ -1,7 +1,7 @@
 package net.liepcki.budgetsentry.user;
 
 import lombok.extern.slf4j.Slf4j;
-import net.liepcki.budgetsentry.BudgetSentryApplicationTests;
+import net.liepcki.budgetsentry.BudgetSentryApplicationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author gregorry
  */
 @Slf4j
-public class UserRepositoryTest extends BudgetSentryApplicationTests {
+public class UserRepositoryTest extends BudgetSentryApplicationTest {
 
     @Autowired
     private UserRepository userRepository;

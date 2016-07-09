@@ -1,7 +1,9 @@
 package net.liepcki.budgetsentry.payment;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "paymentDefinitions")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentDefinition {
 
     @Id

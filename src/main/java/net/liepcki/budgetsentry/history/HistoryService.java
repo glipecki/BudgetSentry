@@ -22,12 +22,12 @@ public class HistoryService {
         this.paymentRepository = paymentRepository;
     }
 
-    public List<Payment> getPastPayments() {
-        return paymentRepository.findByPaymentDateNotNull();
+    public List<Payment> getPastPayments(final String user) {
+        return paymentRepository.findByUserAndPaymentDateNotNull(user);
     }
 
-    public List<Payment> getPendingPayments() {
-        return paymentRepository.findByPaymentDateNull();
+    public List<Payment> getPendingPayments(final String user) {
+        return paymentRepository.findByUserAndPaymentDateNull(user);
     }
 
 }

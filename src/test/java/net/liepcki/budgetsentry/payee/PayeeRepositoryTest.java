@@ -1,7 +1,7 @@
 package net.liepcki.budgetsentry.payee;
 
 import lombok.extern.slf4j.Slf4j;
-import net.liepcki.budgetsentry.BudgetSentryApplicationTests;
+import net.liepcki.budgetsentry.BudgetSentryApplicationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author gregorry
  */
 @Slf4j
-public class PayeeRepositoryTest extends BudgetSentryApplicationTests {
+public class PayeeRepositoryTest extends BudgetSentryApplicationTest {
 
     @Autowired
     private PayeeRepository payeeRepository;

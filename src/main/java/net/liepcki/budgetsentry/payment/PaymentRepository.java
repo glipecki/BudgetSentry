@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface PaymentRepository extends MongoRepository<Payment, String> {
 
-    List<Payment> findByPaymentDateNotNull();
+    List<Payment> findByUserAndPaymentDateNotNull(String user);
 
-    List<Payment> findByPaymentDateNull();
+    List<Payment> findByUserAndPaymentDateNull(String user);
 }
