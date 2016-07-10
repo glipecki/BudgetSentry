@@ -3,7 +3,6 @@ package net.liepcki.budgetsentry.history;
 import lombok.extern.slf4j.Slf4j;
 import net.liepcki.budgetsentry.BudgetSentryApplicationTest;
 import net.liepcki.budgetsentry.payment.Payment;
-import net.liepcki.budgetsentry.payment.PaymentDate;
 import net.liepcki.budgetsentry.payment.PaymentRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class HistoryServiceTest extends BudgetSentryApplicationTest {
 
 	private Payment finishedPayment(final String id) {
 		return dummyPayment(id)
-				.paymentDate(PaymentDate.builder().date(LocalDate.now()).build())
+				.paymentDate(LocalDate.now())
 				.build();
 	}
 

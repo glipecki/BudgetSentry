@@ -28,7 +28,7 @@ public class PaymentRepositoryTest extends BudgetSentryApplicationTest {
 						.id(UUID.randomUUID().toString())
 						.invoiceDate(PaymentDate.builder().date(LocalDate.of(2016, 07, 06)).build())
 						.paymentDueDate(PaymentDate.builder().date(LocalDate.of(2016, 07, 25)).build())
-						.paymentDate(PaymentDate.builder().date(LocalDate.of(2016, 07, 19)).build())
+						.paymentDate(LocalDate.of(2016, 07, 19))
 						.invoiceNumber("XYZ/ABCDDEFG/KKK")
 						.price(new BigDecimal("229.90"))
 						.payee(

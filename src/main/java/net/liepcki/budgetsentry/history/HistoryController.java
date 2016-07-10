@@ -17,7 +17,9 @@ import java.util.List;
 @Slf4j
 public class HistoryController {
 
-	public static final String PENDING_PAYMENTS_URI = "/history/pending";
+	public static final String PENDING_PAYMENTS_URI = "/api/v1/history/pending";
+
+	public static final String FINISHED_PAYMENTS_URI = "/api/v1/history/finished";
 
 	private final HistoryService historyService;
 	private final CurrentUserProvider currentUserProvider;
@@ -35,6 +37,16 @@ public class HistoryController {
 	public List<Payment> pendingPayments() {
 		log.debug("User request for pending payments");
 		return historyService.getPendingPayments(currentUserProvider.getCurrentUser());
+	}
+
+	@RequestMapping(
+			value = FINISHED_PAYMENTS_URI,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET
+	)
+	public List<Payment> finishedPayments() {
+		log.debug("User request for finished payments");
+		return historyService.getFinishedPayments(currentUserProvider.getCurrentUser());
 	}
 
 }

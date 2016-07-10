@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * @author gregorry
@@ -23,7 +24,7 @@ public class Payment {
 	private String id;
 	private PaymentDate invoiceDate;
 	private PaymentDate paymentDueDate;
-	private PaymentDate paymentDate;
+	private LocalDate paymentDate;
 	private String invoiceNumber;
 	private BigDecimal price;
 	private PaymentPayee payee;

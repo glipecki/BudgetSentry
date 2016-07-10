@@ -2,6 +2,7 @@ package net.liepcki.budgetsentry.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
 import net.liepcki.budgetsentry.BudgetSentryApplicationTest;
+import net.liepcki.budgetsentry.payee.*;
 import net.liepcki.budgetsentry.payment.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,20 @@ public class SchedulePaymentTest extends BudgetSentryApplicationTest {
 	@Deprecated
 	private PaymentRepository paymentRepository;
 
+	/**
+	 * @deprecated use REST API instead of repository
+	 */
+	@Autowired
+	@Deprecated
+	private PayeeAccountRepository payeeAccountRepository;
+
+	/**
+	 * @deprecated use REST API instead of repository
+	 */
+	@Autowired
+	@Deprecated
+	private PayeeRepository payeeRepository;
+
 	@MockBean
 	private Clock clock;
 
@@ -52,9 +67,7 @@ public class SchedulePaymentTest extends BudgetSentryApplicationTest {
 
 	@Before
 	public void setUpPaymentDefinition() {
-		paymentDefinitionId =  paymentDefinitionRepository.save(
-				paymentDefinition(MONTHLY, 19)
-		).getId();
+		paymentDefinitionId = paymentDefinition(MONTHLY, 19);
 	}
 
 	@Test
@@ -101,10 +114,22 @@ public class SchedulePaymentTest extends BudgetSentryApplicationTest {
 		assertThat(payments.get(0).getId()).isEqualTo(existingPaymentId);
 	}
 
-	private PaymentDefinition paymentDefinition(
+	private String paymentDefinition(
 			final PaymentDefinitionPeriodType periodType,
 			final int paymentDueDate) {
-		return PaymentDefinition.builder()
+		final String payeeId = payeeRepository.save(
+				Payee.builder()
+						.id("payee")
+						.address(PayeeAddress.builder().build())
+						.build()
+		).getId();
+		final String payeeAccountId = payeeAccountRepository.save(
+				PayeeAccount.builder()
+						.id("payeeAccount")
+						.payee(payeeId)
+						.build()
+		).getId();
+		final PaymentDefinition paymentDefinition = PaymentDefinition.builder()
 				.id(UUID.randomUUID().toString())
 				.period(
 						PaymentDefinitionPeriod.builder()
@@ -118,10 +143,12 @@ public class SchedulePaymentTest extends BudgetSentryApplicationTest {
 								.value(new BigDecimal("100.00"))
 								.build()
 				)
+				.payeeAccount(payeeAccountId)
 				.invoiceDate(PaymentDefinitionDate.builder().day(1).build())
 				.paymentDueDate(PaymentDefinitionDate.builder().day(paymentDueDate).build())
 				.user(USER)
 				.build();
+		return paymentDefinitionRepository.save(paymentDefinition).getId();
 	}
 
 	private List<Payment> getPayments() {

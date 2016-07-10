@@ -1,0 +1,36 @@
+package net.liepcki.budgetsentry;
+
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.time.LocalDate;
+
+import static springfox.documentation.builders.PathSelectors.regex;
+
+/**
+ * @author gregorry
+ */
+@Configuration
+@EnableSwagger2
+public class SwaggerConfiguration {
+
+	@Bean
+	public Docket restApiSpec() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.apiInfo(new ApiInfoBuilder()
+						.title("Budget Sentry REST API")
+						.version("v1")
+						.build())
+				.ignoredParameterTypes(Authentication.class)
+				.directModelSubstitute(LocalDate.class, String.class)
+				.select()
+				.paths(regex("/api/v1/.*"))
+				.build();
+	}
+
+}

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
  * <p>
  * - current tasks - need to be handled
  * - future tasks - will be available for action in near future
+ * - past tasks - already done tasks
  * </p>
  *
  * @author gregorry

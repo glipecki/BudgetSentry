@@ -30,4 +30,8 @@ public class HistoryService {
 		return paymentRepository.findByUserAndPaymentDateNull(user);
 	}
 
+	public List<Payment> getFinishedPayments(final String user) {
+		return paymentRepository.findByUserAndPaymentDateNotNull(user);
+	}
+
 }
