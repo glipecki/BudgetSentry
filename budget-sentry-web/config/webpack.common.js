@@ -3,14 +3,22 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
 
+var paths = {
+    src: 'src'
+};
+
 module.exports = {
+    context: helpers.root(paths.src),
     entry: {
-        'polyfills': './src/polyfills.ts',
-        'vendor': './src/vendor.ts',
-        'app': './src/main.ts'
+        'polyfills': './polyfills.ts',
+        'vendor': './vendor.ts',
+        'app': './index.ts'
     },
     resolve: {
-        extensions: ['', '.js', '.ts']
+        extensions: ['', '.js', '.ts'],
+        root: [
+            helpers.root(paths.src)
+        ]
     },
     module: {
         loaders: [
@@ -28,15 +36,18 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                exclude: helpers.root('src', 'app'),
+                exclude: helpers.root(paths.src),
                 loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
             },
             {
                 test: /\.css$/,
-                include: helpers.root('src', 'app'),
+                include: helpers.root(paths.src),
                 loader: 'raw'
             }
         ]
+    },
+    ts: {
+        configFileName: '../tsconfig.json'
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
@@ -44,7 +55,7 @@ module.exports = {
         }),
 
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'index.html'
         })
     ]
 };
