@@ -1,10 +1,9 @@
 var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var commonConfig = require('./webpack.common.js');
+var buildConfig = require('./webpack.build.js');
 var helpers = require('./helpers');
 
-module.exports = webpackMerge(commonConfig, {
-    devtool: 'cheap-module-eval-source-map',
+module.exports = webpackMerge(buildConfig, {
     output: {
         path: helpers.root('dist'),
         publicPath: 'http://localhost:9000/',

@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'demo',
-    template: 'demo :)'
+    template: '<button (click)="onButtonClick()">demo :)</button>'
 })
-export class DemoComponent { }
+export class DemoComponent {
+    public onButtonClick() {
+        console.log('hello click!');
+    }
+}

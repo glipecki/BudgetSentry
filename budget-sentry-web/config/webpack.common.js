@@ -1,30 +1,19 @@
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
 
-var paths = {
-    src: 'src'
-};
-
 module.exports = {
-    context: helpers.root(paths.src),
-    entry: {
-        'polyfills': './polyfills.ts',
-        'vendor': './vendor.ts',
-        'app': './index.ts'
-    },
+    context: helpers.root('src'),
     resolve: {
         extensions: ['', '.js', '.ts'],
         root: [
-            helpers.root(paths.src)
+            helpers.root('src')
         ]
     },
     module: {
         loaders: [
             {
                 test: /\.ts$/,
-                loaders: ['ts', 'angular2-template-loader']
+                loaders: ['ts']
             },
             {
                 test: /\.html$/,
@@ -35,27 +24,12 @@ module.exports = {
                 loader: 'file?name=assets/[name].[hash].[ext]'
             },
             {
-                test: /\.css$/,
-                exclude: helpers.root(paths.src),
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
-            },
-            {
-                test: /\.css$/,
-                include: helpers.root(paths.src),
-                loader: 'raw'
+                test: /\.scss$/,
+                loader: 'raw!sass'
             }
         ]
     },
     ts: {
-        configFileName: '../tsconfig.json'
-    },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'vendor', 'polyfills']
-        }),
-
-        new HtmlWebpackPlugin({
-            template: 'index.html'
-        })
-    ]
+        configFileName: helpers.root('.') + '/tsconfig.json'
+    }
 };

@@ -1,29 +1,6 @@
-module.exports = {
-    devtool: 'inline-source-map',
+var webpackMerge = require('webpack-merge');
+var commonConfig = require('./webpack.common.js');
 
-    resolve: {
-        extensions: ['', '.ts', '.js']
-    },
-
-    module: {
-        loaders: [
-            {
-                test: /\.ts$/,
-                loaders: ['ts', 'angular2-template-loader']
-            },
-            {
-                test: /\.html$/,
-                loader: 'html'
-
-            },
-            {
-                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'null'
-            },
-            {
-                test: /\.css$/,
-                loader: 'null'
-            }
-        ]
-    }
-};
+module.exports = webpackMerge(commonConfig, {
+    devtool: '#inline-source-map'
+});
