@@ -2,3 +2,6 @@ target
 .idea
 *.iml
 RealWorldData.java
+dist/
+node_modules/
+typings/
